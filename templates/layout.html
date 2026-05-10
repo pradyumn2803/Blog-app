@@ -48,14 +48,14 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <!-- Left Links -->
             <div class="navbar-nav me-auto">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-              <a class="nav-link" href="/about">About</a>
+              <a class="nav-link active" aria-current="page" href="{{ url_for('home')}}">Home</a>
+              <a class="nav-link" href="{{ url_for('about')}}">About</a>
             </div>
 
             <!-- Right Links -->
             <div class="navbar-nav">
-              <a class="nav-link" href="/login">Login</a>
-              <a class="nav-link" href="/register">Register</a>
+              <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+              <a class="nav-link" href="{{ url_for('register') }}">Register</a>
             </div>
           </div>
         </div>
@@ -65,7 +65,19 @@
     <main class="container py-4" role="main">
       <div class="row g-4">
         <!-- Main Content -->
-        <div class="col-lg-8">{% block content %}{% endblock %}</div>
+        <div class="col-lg-8">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                  {% for category, message in messages %}
+                      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                          {{ message }}
+                          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                      </div>
+                  {% endfor %}
+              {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
 
         <!-- Sidebar -->
         <div class="col-lg-4">
